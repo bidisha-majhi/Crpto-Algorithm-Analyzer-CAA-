@@ -3,6 +3,7 @@ from Crypto.Random import get_random_bytes
 from Crypto.Util.Padding import pad, unpad
 from base64 import b64encode, b64decode
 from hashlib import sha1, sha256
+from twofish import Twofish
 
 
 class CryptographerAES:
@@ -54,4 +55,25 @@ class CryptographerAES:
         return plain_text.decode() if is_string else plain_text
 
 
+class CryptographerTwofish:
+    
+    def __init__(self):
+        pass
 
+    def encrypt(self, plain_text, secret: str):
+        if type(plain_text) == str:
+            is_string = True
+            plain_text = plain_text.encode('utf-8')
+        secret = secret.encode('utf-8')
+        cipher = Twofish(secret)
+        cipher_text = cipher.encrypt(plain_text)
+        print(cipher_text)
+
+    def decrypt(self, cipher_text, secret: str):
+        if type(cipher_text) == str:
+            is_string = True
+            cipher_text = cipher_text.encode('utf-8')
+        secret = secret.encode('utf-8')
+        cipher = Twofish(secret)
+        plain_text = cipher.decrypt(cipher_text)
+        print(plain_text)
