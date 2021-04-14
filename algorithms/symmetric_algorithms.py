@@ -61,39 +61,39 @@ class CryptographerBlowfish:
   def __init__(self):
     pass
   
-  def encrypt(self, plaintext, key:str):
+  def encrypt(self, plain_text, secret:str):
     bs = Blowfish.block_size
-    isString = False
-    if type(plaintext) ==str:
-      plaintext= plaintext.encode('utf-8')
-      isString = True
-    key = sha1(key.encode()).hexdigest().encode('utf-8')
+    is_string = False
+    if type(plain_text) == str:
+      plain_text= plain_text.encode('utf-8')
+      is_string = True
+    key = sha1(secret.encode()).hexdigest().encode('utf-8')
     iv = Random.new().read(bs)
     cipher = Blowfish.new(key, Blowfish.MODE_CBC, iv)
-    plen = bs - divmod(len(plaintext),bs)[1]
+    plen = bs - divmod(len(plain_text),bs)[1]
     padding = [plen]*plen
     padding = pack('b'*plen, *padding)
-    msg = iv + cipher.encrypt(plaintext+padding)
+    msg = iv + cipher.encrypt(plain_text+padding)
     msg = b64encode(msg)
-    return msg.decode() if isString else msg
+    return msg.decode() if is_string else msg
     
     
       
-  def decrypt(self,ciphertext,key:str):
+  def decrypt(self,cipher_text,secret:str):
     bs = Blowfish.block_size
-    isString = False
-    if type(ciphertext) ==str:
-      ciphertext=ciphertext.encode('utf-8')
-      isString = True
-    key = sha1(key.encode()).hexdigest().encode('utf-8')
-    ciphertext = b64decode(ciphertext)
-    iv = ciphertext[:bs]
-    ciphertext = ciphertext[bs:]
+    is_string = False
+    if type(cipher_text) ==str:
+      cipher_text=cipher_text.encode('utf-8')
+      is_string = True
+    key= sha1(secret.encode()).hexdigest().encode('utf-8')
+    cipher_text = b64decode(cipher_text)
+    iv = cipher_text[:bs]
+    cipher_text = cipher_text[bs:]
     cipher = Blowfish.new(key, Blowfish.MODE_CBC, iv)
-    msg = cipher.decrypt(ciphertext)
+    msg = cipher.decrypt(cipher_text)
     last_byte = msg[-1]
     msg = msg[:- (last_byte if type(last_byte) is int else ord(last_byte))]
-    return msg.decode() if isString else msg
+    return msg.decode() if is_string else msg
 
     
     
@@ -157,3 +157,4 @@ if __name__ == "__main__":
     print(encrypted)
     decrypted = CryptographerTwofish().decrypt(cipher_text=encrypted, secret='shouvikshouvikshouvikshouviksh')
     print(decrypted)
+    
