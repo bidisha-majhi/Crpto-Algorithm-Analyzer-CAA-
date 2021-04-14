@@ -53,6 +53,50 @@ class CryptographerAES:
         plain_text = cipher.decrypt(cipher_text)
         plain_text = unpad(plain_text, AES.block_size)
         return plain_text.decode() if is_string else plain_text
+    
+
+class CryptographerBlowfish:
+      
+  
+  def __init__(self):
+    pass
+  
+  def encrypt(self, plaintext, key:str):
+    bs = Blowfish.block_size
+    isString = False
+    if type(plaintext) ==str:
+      plaintext= plaintext.encode('utf-8')
+      isString = True
+    key = sha1(key.encode()).hexdigest().encode('utf-8')
+    iv = Random.new().read(bs)
+    cipher = Blowfish.new(key, Blowfish.MODE_CBC, iv)
+    plen = bs - divmod(len(plaintext),bs)[1]
+    padding = [plen]*plen
+    padding = pack('b'*plen, *padding)
+    msg = iv + cipher.encrypt(plaintext+padding)
+    msg = b64encode(msg)
+    return msg.decode() if isString else msg
+    
+    
+      
+  def decrypt(self,ciphertext,key:str):
+    bs = Blowfish.block_size
+    isString = False
+    if type(ciphertext) ==str:
+      ciphertext=ciphertext.encode('utf-8')
+      isString = True
+    key = sha1(key.encode()).hexdigest().encode('utf-8')
+    ciphertext = b64decode(ciphertext)
+    iv = ciphertext[:bs]
+    ciphertext = ciphertext[bs:]
+    cipher = Blowfish.new(key, Blowfish.MODE_CBC, iv)
+    msg = cipher.decrypt(ciphertext)
+    last_byte = msg[-1]
+    msg = msg[:- (last_byte if type(last_byte) is int else ord(last_byte))]
+    return msg.decode() if isString else msg
+
+    
+    
 
 
 class CryptographerTwofish:
