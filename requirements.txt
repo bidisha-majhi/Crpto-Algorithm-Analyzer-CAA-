@@ -1,1 +1,2 @@
-
+pycryptodome==3.10.1
+twofish==0.3.0
