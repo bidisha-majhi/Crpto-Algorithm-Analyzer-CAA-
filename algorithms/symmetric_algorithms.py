@@ -17,10 +17,10 @@ class CryptographerAES:
     def create_key(self, secret: str):
         key = pad(secret.encode('utf-8'), 32).decode()
         if self.type == 128:
-            print(key[0:16], len(key[0:16]))
+         
             return key[0:16]
         elif self.type == 256:
-            print(key[0:32], len(key[0:32]))
+           
             return key[0:32]
 
 
@@ -67,7 +67,14 @@ class CryptographerBlowfish:
         self.mode = Blowfish.MODE_CBC
 
     def create_key(self, secret: str):
-        key = sha1(secret.encode()).hexdigest().encode('utf-8')
+        if len(secret)<4:
+            key = pad(secret.encode('utf-8'), 4).decode()
+        elif len(secret)<=56:
+            key = secret
+        else:
+            key = secret[0:56]
+        
+        key = key.encode('utf-8')
         return key
   
     def encrypt(self, plain_text, secret:str):
@@ -117,7 +124,7 @@ class CryptographerTwofish:
     def create_key(self, secret:str):
         secret = secret if len(secret) <=30 else secret[0:30]
         key = "*" + secret + "*"
-        print(key, len(key))
+        
         return key
 
     def encrypt(self, plain_text, secret):
