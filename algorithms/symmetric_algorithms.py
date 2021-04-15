@@ -64,7 +64,7 @@ class CryptographerAES:
 
 class CryptographerBlowfish:
     def __init__(self):
-        pass
+        self.mode = Blowfish.MODE_CBC
 
     def create_key(self, secret: str):
         key = sha1(secret.encode()).hexdigest().encode('utf-8')
@@ -81,7 +81,7 @@ class CryptographerBlowfish:
         key = self.create_key(secret)
 
         iv = Random.new().read(bs)
-        cipher = Blowfish.new(key, Blowfish.MODE_CBC, iv)
+        cipher = Blowfish.new(key, self.mode, iv)
         plen = bs - divmod(len(plain_text),bs)[1]
         padding = [plen]*plen
         padding = pack('b'*plen, *padding)
@@ -89,8 +89,6 @@ class CryptographerBlowfish:
         msg = b64encode(msg)
         return msg.decode() if is_string else msg
 
-
-        
     def decrypt(self,cipher_text,secret:str):
         bs = Blowfish.block_size
 
@@ -104,12 +102,11 @@ class CryptographerBlowfish:
         cipher_text = b64decode(cipher_text)
         iv = cipher_text[:bs]
         cipher_text = cipher_text[bs:]
-        cipher = Blowfish.new(key, Blowfish.MODE_CBC, iv)
+        cipher = Blowfish.new(key, self.mode, iv)
         msg = cipher.decrypt(cipher_text)
         last_byte = msg[-1]
         msg = msg[:- (last_byte if type(last_byte) is int else ord(last_byte))]
         return msg.decode() if is_string else msg
-
 
 
 class CryptographerTwofish:
@@ -165,10 +162,10 @@ class CryptographerTwofish:
         return plain_text.decode() if is_string else plain_text
 
 if __name__ == "__main__":
-    c = CryptographerTwofish()
+    c = CryptographerBlowfish()
     plain_text  = "Hello World "*5
-    encrypted = CryptographerTwofish().encrypt(plain_text=plain_text, secret='shouvik')
+    encrypted = c.encrypt(plain_text=plain_text, secret='shouvik')
     print(encrypted)
-    decrypted = CryptographerTwofish().decrypt(cipher_text=encrypted, secret='shouvik')
+    decrypted = c.decrypt(cipher_text=encrypted, secret='shouvik')
     print(decrypted)
     
