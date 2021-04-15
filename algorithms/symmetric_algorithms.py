@@ -10,17 +10,16 @@ class CryptographerAES:
 
     def __init__(self, type: int=128):
         self.mode = AES.MODE_CBC
-        if type == 128:
-            self.key_hash_fn = sha1
-        elif type == 256:
-            self.key_hash_fn = sha256
+        self.type = type
     
     def create_key(self, secret: str):
-        key = self.key_hash_fn(secret.encode()).digest()
-        if self.key_hash_fn == sha1:
+        key = pad(secret.encode('utf-8'), 32).decode()
+        if type == 128:
+            print(key[0:16], len(key[0:16]))
             return key[0:16]
-        elif self.key_hash_fn == sha256:
-            return key
+        elif type == 256:
+            print(key[0:32], len(key[0:32]))
+            return key[0:32]
 
 
     def encrypt(self, plain_text, secret: str):
@@ -56,61 +55,68 @@ class CryptographerAES:
     
 
 class CryptographerBlowfish:
-      
-  
-  def __init__(self):
-    pass
-  
-  def encrypt(self, plain_text, secret:str):
-    bs = Blowfish.block_size
-    is_string = False
-    if type(plain_text) == str:
-      plain_text= plain_text.encode('utf-8')
-      is_string = True
-    key = sha1(secret.encode()).hexdigest().encode('utf-8')
-    iv = Random.new().read(bs)
-    cipher = Blowfish.new(key, Blowfish.MODE_CBC, iv)
-    plen = bs - divmod(len(plain_text),bs)[1]
-    padding = [plen]*plen
-    padding = pack('b'*plen, *padding)
-    msg = iv + cipher.encrypt(plain_text+padding)
-    msg = b64encode(msg)
-    return msg.decode() if is_string else msg
-    
-    
-      
-  def decrypt(self,cipher_text,secret:str):
-    bs = Blowfish.block_size
-    is_string = False
-    if type(cipher_text) ==str:
-      cipher_text=cipher_text.encode('utf-8')
-      is_string = True
-    key= sha1(secret.encode()).hexdigest().encode('utf-8')
-    cipher_text = b64decode(cipher_text)
-    iv = cipher_text[:bs]
-    cipher_text = cipher_text[bs:]
-    cipher = Blowfish.new(key, Blowfish.MODE_CBC, iv)
-    msg = cipher.decrypt(cipher_text)
-    last_byte = msg[-1]
-    msg = msg[:- (last_byte if type(last_byte) is int else ord(last_byte))]
-    return msg.decode() if is_string else msg
+    def __init__(self):
+        pass
 
-    
-    
+    def create_key(self, secret: str):
+        key = sha1(secret.encode()).hexdigest().encode('utf-8')
+        return key
+  
+    def encrypt(self, plain_text, secret:str):
+        bs = Blowfish.block_size
+
+        is_string = False
+        if type(plain_text) == str:
+            plain_text= plain_text.encode('utf-8')
+            is_string = True
+
+        key = self.create_key(secret)
+
+        iv = Random.new().read(bs)
+        cipher = Blowfish.new(key, Blowfish.MODE_CBC, iv)
+        plen = bs - divmod(len(plain_text),bs)[1]
+        padding = [plen]*plen
+        padding = pack('b'*plen, *padding)
+        msg = iv + cipher.encrypt(plain_text+padding)
+        msg = b64encode(msg)
+        return msg.decode() if is_string else msg
+
+
+        
+    def decrypt(self,cipher_text,secret:str):
+        bs = Blowfish.block_size
+
+        is_string = False
+        if type(cipher_text) ==str:
+            cipher_text=cipher_text.encode('utf-8')
+            is_string = True
+
+        key = self.create_key(secret)
+
+        cipher_text = b64decode(cipher_text)
+        iv = cipher_text[:bs]
+        cipher_text = cipher_text[bs:]
+        cipher = Blowfish.new(key, Blowfish.MODE_CBC, iv)
+        msg = cipher.decrypt(cipher_text)
+        last_byte = msg[-1]
+        msg = msg[:- (last_byte if type(last_byte) is int else ord(last_byte))]
+        return msg.decode() if is_string else msg
+
 
 
 class CryptographerTwofish:
-    
+
     def __init__(self):
         pass
 
     def create_key(self, secret:str):
-        key = sha1(secret.encode()).hexdigest()
-        key = key[:30]
+        secret = secret if len(secret) <=30 else secret[0:30]
+        key = "*" + secret + "*"
+        print(key, len(key))
         return key
 
     def encrypt(self, plain_text, secret):
-        secret = "*"+self.create_key(secret)+"*"
+        key = self.create_key(secret)
 
         is_string = False
         if type(plain_text) == str:
@@ -119,28 +125,28 @@ class CryptographerTwofish:
 
         plain_text = pad(plain_text, 16)
 
-        secret = secret.encode('utf-8')
+        key = key.encode('utf-8')
         
-        cipher = Twofish(secret)
+        cipher = Twofish(key)
         cipher_text = b""
         for i in range(0, len(plain_text), 16):
             plain_text_substring = plain_text[i: i+16]
             cipher_text_substring = cipher.encrypt(plain_text_substring)
             cipher_text_substring = b64encode(cipher_text_substring)
             cipher_text += cipher_text_substring
-       
+        
         return cipher_text.decode() if is_string else cipher_text
 
     def decrypt(self, cipher_text, secret):
-        secret = "*"+self.create_key(secret)+"*"
+        key = self.create_key(secret)
         is_string = False
         if type(cipher_text) == str:
             is_string = True
             cipher_text = cipher_text.encode('utf-8')
         
-        secret = secret.encode('utf-8')
+        key = key.encode('utf-8')
         
-        cipher = Twofish(secret)
+        cipher = Twofish(key)
         plain_text = b""
         for i in range(0, len(cipher_text), 24):
             cipher_text_substring = b64decode(cipher_text[i:i+24])
