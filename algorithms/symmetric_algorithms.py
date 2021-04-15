@@ -1,6 +1,8 @@
-from Crypto.Cipher import AES
+from Crypto.Cipher import AES, Blowfish
+from Crypto import Random
 from Crypto.Random import get_random_bytes
 from Crypto.Util.Padding import pad, unpad
+from struct import pack
 from base64 import b64encode, b64decode
 from hashlib import sha1, sha256
 from twofish import Twofish
@@ -14,10 +16,10 @@ class CryptographerAES:
     
     def create_key(self, secret: str):
         key = pad(secret.encode('utf-8'), 32).decode()
-        if type == 128:
+        if self.type == 128:
             print(key[0:16], len(key[0:16]))
             return key[0:16]
-        elif type == 256:
+        elif self.type == 256:
             print(key[0:32], len(key[0:32]))
             return key[0:32]
 
@@ -31,6 +33,7 @@ class CryptographerAES:
         
         plain_text = pad(plain_text, AES.block_size)
 
+        key = key.encode('utf-8')
         cipher = AES.new(key, self.mode)
         iv = cipher.iv
 
@@ -42,12 +45,17 @@ class CryptographerAES:
     
     def decrypt(self, cipher_text, secret: str):
         key = self.create_key(secret)
+
         is_string = False
         if type(cipher_text) == str:
             is_string = True
             cipher_text = cipher_text.encode('utf-8')
+
         cipher_text = b64decode(cipher_text)
+
         iv, cipher_text = cipher_text[:16], cipher_text[16:]
+
+        key = key.encode('utf-8')
         cipher = AES.new(key, self.mode, iv)
         plain_text = cipher.decrypt(cipher_text)
         plain_text = unpad(plain_text, AES.block_size)
@@ -159,8 +167,8 @@ class CryptographerTwofish:
 if __name__ == "__main__":
     c = CryptographerTwofish()
     plain_text  = "Hello World "*5
-    encrypted = CryptographerTwofish().encrypt(plain_text=plain_text, secret='shouvikshouvikshouvikshouviksh')
+    encrypted = CryptographerTwofish().encrypt(plain_text=plain_text, secret='shouvik')
     print(encrypted)
-    decrypted = CryptographerTwofish().decrypt(cipher_text=encrypted, secret='shouvikshouvikshouvikshouviksh')
+    decrypted = CryptographerTwofish().decrypt(cipher_text=encrypted, secret='shouvik')
     print(decrypted)
     
