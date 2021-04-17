@@ -168,11 +168,5 @@ class CryptographerTwofish:
         
         return plain_text.decode() if is_string else plain_text
 
-if __name__ == "__main__":
-    c = CryptographerBlowfish()
-    plain_text  = "Hello World "*5
-    encrypted = c.encrypt(plain_text=plain_text, secret='shouvik')
-    print(encrypted)
-    decrypted = c.decrypt(cipher_text=encrypted, secret='shouvik')
-    print(decrypted)
+
     
