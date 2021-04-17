@@ -124,21 +124,3 @@ class CryptographerSHA512():
       plain_text = plain_text.encode('utf-8')
       msg = hashlib.sha512(plain_text)
       return (msg.hexdigest())
-      
-    
-    
-if __name__ == "__main__":
-
-    plain_text = 'Bidisha2306'
-    encrypted1 = CryptographerSHA1().encrypt(plain_text=plain_text)
-    print(encrypted1)
-    encrypted2 = CryptographerSHA224().encrypt(plain_text=plain_text)
-    print(encrypted2)
-    encrypted3 = CryptographerSHA256().encrypt(plain_text=plain_text)
-    print(encrypted3)
-    encrypted4 = CryptographerSHA384().encrypt(plain_text=plain_text)
-    print(encrypted4)
-    encrypted5 = CryptographerSHA512().encrypt(plain_text=plain_text)
-    print(encrypted5)    
-    print(hashlib.algorithms_available)
-    print(CryptographerWHIRLPOOL().encrypt("Shouvik"))
