@@ -168,5 +168,3 @@ class CryptographerTwofish:
         
         return plain_text.decode() if is_string else plain_text
 
-
-    
