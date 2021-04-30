@@ -1,10 +1,8 @@
 from Crypto.Cipher import AES, Blowfish
 from Crypto import Random
-from Crypto.Random import get_random_bytes
 from Crypto.Util.Padding import pad, unpad
 from struct import pack
 from base64 import b64encode, b64decode
-from hashlib import sha1, sha256
 from twofish import Twofish
 
 
@@ -168,3 +166,9 @@ class CryptographerTwofish:
         
         return plain_text.decode() if is_string else plain_text
 
+if __name__ == "__main__":
+    obj = CryptographerAES(256)
+    encrypted = obj.encrypt("Sample Text", "shouvik")
+    print(encrypted)
+    decrypted = obj.decrypt(encrypted, "shouvik")
+    print(decrypted)

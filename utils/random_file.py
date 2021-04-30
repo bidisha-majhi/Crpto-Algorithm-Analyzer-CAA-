@@ -16,5 +16,5 @@ def create_random_file(file_name: str, GB=0, MB=0, KB=0, Bytes=0):
 if __name__ == "__main__":
      file_name = "attempt1.txt"
 
-     create_random_file(file_name=file_name, MB=5)
+     create_random_file(file_name=file_name, GB=1)
 
