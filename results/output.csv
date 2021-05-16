@@ -1,9 +1,3 @@
-,Algorithm,File Size,Mode,Time Taken,Energy Consumed
-0,Aes 128,100,Encryption,10,10
-1,Aes 128,100,Encryption,10,10
-2,Aes 128,100,Encryption,10,10
-3,Aes 128,100,Encryption,10,10
-4,Aes 128,100,Encryption,10,10
-5,Aes 128,100,Encryption,10,10
-6,Aes 128,100,Encryption,10,10
-7,Aes 128,100,Encryption,10,10
+,ALGORITHM,FILE NAME,FILE SIZE,MODE,DURATION,ENERGY CONSUMPTION
+0,Aes 128,Somefile.txt,100,Encryption,10,10
+1,Aes 128,Somefile.txt,100,Encryption,10,10

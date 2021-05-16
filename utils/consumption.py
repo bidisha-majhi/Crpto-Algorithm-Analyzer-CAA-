@@ -1,25 +1,4 @@
 import pyRAPL
-import time
-'''
-pyRAPL.setup()
-
-report = pyRAPL.outputs.DataFrameOutput()
-
-measure = pyRAPL.Measurement('aes', output=report)
-
-measure.begin()
-i = 0
-for _ in range(100000):
-    i +=1
-print("hello world")
-measure.end()
-
-
-measure.export(report)
-df = report.data.head()
-print(df)
-print(df['pkg'].iloc[0]/100000)
-'''
 
 
 class ConsumptionMeasure:
@@ -59,15 +38,3 @@ if __name__ == "__main__":
     print("Energy Consumption (in micro Joules)", consumption_measure.get_energy_consumption())
     print("Time Taken (in microseconds)", consumption_measure.get_duration())
 
-
-'''
-def someFunction(arg1, agr2):
-    ....
-    ....
-    
-measure(lambda: someFunction(arg1, arg2))
-
-
-lambda a,b,c: a+b*c
-
-'''
