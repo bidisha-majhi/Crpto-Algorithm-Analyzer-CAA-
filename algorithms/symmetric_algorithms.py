@@ -21,7 +21,6 @@ class CryptographerAES:
            
             return key[0:32]
 
-
     def encrypt(self, plain_text, secret: str):
         key = self.create_key(secret)
         is_string = False
@@ -167,8 +166,9 @@ class CryptographerTwofish:
         return plain_text.decode() if is_string else plain_text
 
 if __name__ == "__main__":
-    obj = CryptographerAES(256)
-    encrypted = obj.encrypt("Sample Text", "shouvik")
+    obj = CryptographerTwofish()
+    encrypted = obj.encrypt(b"Sample Text", "shouvik")
     print(encrypted)
-    decrypted = obj.decrypt(encrypted, "shouvik")
-    print(decrypted)
+    for _ in range(10):
+        decrypted = obj.decrypt(encrypted, "shouvik")
+        print(decrypted)

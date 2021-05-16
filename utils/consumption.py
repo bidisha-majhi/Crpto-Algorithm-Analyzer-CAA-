@@ -28,15 +28,20 @@ class ConsumptionMeasure:
         pyRAPL.setup()
 
         self.report = pyRAPL.outputs.DataFrameOutput()
-        self.measure_obj = pyRAPL.Measurement('aes')
+        self.measure_obj = pyRAPL.Measurement('consumption')
 
     def measure(self, func, epoch=2**20):
         return_obj = None
         self.epoch = epoch
+
         self.measure_obj.begin()
-        for _ in range(self.epoch): return_obj = func()
+
+        for _ in range(self.epoch):
+            return_obj = func()
+
         self.measure_obj.end()
-        print(self.measure_obj.result)
+
+        #print(self.measure_obj.result)
         self.result = self.measure_obj.result
         return return_obj
 
@@ -53,3 +58,16 @@ if __name__ == "__main__":
     consumption_measure.measure(lambda: print("Hello World"), epoch=2**10)
     print("Energy Consumption (in micro Joules)", consumption_measure.get_energy_consumption())
     print("Time Taken (in microseconds)", consumption_measure.get_duration())
+
+
+'''
+def someFunction(arg1, agr2):
+    ....
+    ....
+    
+measure(lambda: someFunction(arg1, arg2))
+
+
+lambda a,b,c: a+b*c
+
+'''
