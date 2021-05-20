@@ -8,7 +8,7 @@ ORIGINAL_FILE_BASE_PATH = "data/original/"
 ENCRYPTED_FILE_BASE_PATH = "data/encrypted/"
 DECRYPTED_FILE_BASE_PATH = "data/decrypted/"
 
-ALGORITHM = CryptographerAES(128)
+ALGORITHM = CryptographerBlowfish()
 FILE_NAME = "file_1GB.txt"
 MODE = "DECRYPTION"
 PASSWORD = "Shouvik"
