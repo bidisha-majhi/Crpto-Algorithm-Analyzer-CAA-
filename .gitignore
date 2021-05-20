@@ -4,4 +4,4 @@
 **/data/**
 venv/**
 .idea/**
-results/
+results/output.csv
