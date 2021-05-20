@@ -8,15 +8,15 @@ ORIGINAL_FILE_BASE_PATH = "data/original/"
 ENCRYPTED_FILE_BASE_PATH = "data/encrypted/"
 DECRYPTED_FILE_BASE_PATH = "data/decrypted/"
 
-ALGORITHM = CryptographerSHA224()
-FILE_NAME = "someText.txt"
-MODE = "HASHING"
+ALGORITHM = CryptographerAES(128)
+FILE_NAME = "file_1GB.txt"
+MODE = "DECRYPTION"
 PASSWORD = "Shouvik"
 FILE_INPUT_PATH = (ORIGINAL_FILE_BASE_PATH if MODE.lower() != "decryption" else ENCRYPTED_FILE_BASE_PATH) + FILE_NAME
 FILE_SIZE = os.path.getsize(FILE_INPUT_PATH)
 
 #CONSUMPTION MEASURE PARAMETERS
-EPOCH = 2*20
+EPOCH = 2**3
 
 #CSV GENERATOR PARAMETERS
 PREVIOUS_OUTPUT = "Results_Symmetric_Algorithms.csv" if MODE.lower() != "hashing" else "Results_Hashing_Functions.csv"
