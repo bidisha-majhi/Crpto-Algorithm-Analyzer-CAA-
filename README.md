@@ -1,5 +1,5 @@
 # Crypto Algorithm Analyzer (CAA)
-This project aims to develop a Python program to compare different Symmetric algorithms and Hashing fucntions based on given set of parameters:
+This project aims to develop a Python program to compare different Symmetric algorithms and Hashing functions based on given set of parameters:
 1. File Size of .txt files (100Kb to 1Gb)
 2. Mode (Encryption/Decryption)
 3. Time Consumption (µs)
@@ -40,7 +40,7 @@ This project aims to develop a Python program to compare different Symmetric alg
 
 ## Setup
 To run this project locally,
-1. Install Python 3.5 or above installed in your system. To download the latest version of Python, [click here](https://www.python.org/downloads/)
+1. Install Python 3.5 or above in your system. To download the latest version of Python, [click here](https://www.python.org/downloads/)
 2. Install the necessary required libraries and its dependencies locally in the system, open Command Prompt and run:  
 ``pip install -r requirements.txt``
 3. Set appropiate values of the following variables in `main.py`:
